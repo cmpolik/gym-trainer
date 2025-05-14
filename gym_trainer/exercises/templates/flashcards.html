@@ -2,27 +2,27 @@
 {% block title %}Flashcards{% endblock %}
 {% block content %}
 <h1>Exercise Flashcards</h1>
-<div class="row">
-    {% for exercise in exercises %}
-    <div class="col-md-4 mb-3">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">{{ exercise.name }}</h5>
-                <p class="card-text"><strong>Muscles:</strong> {{ exercise.muscles }}</p>
-                <p class="card-text">{{ exercise.description }}</p>
-                <h6>Comments:</h6>
-                <ul>
-                    {% for comment in exercise.comments.all %}
-                    <li>{{ comment.text }}</li>
-                    {% empty %}
-                    <li>No comments yet.</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
+{% if exercises %}
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ exercises.0.name }}</h5>
+        <p class="card-text"><strong>Muscles:</strong> {{ exercises.0.muscles }}</p>
+        <p class="card-text">{{ exercises.0.description }}</p>
+        <h6>Comments:</h6>
+        <ul>
+            {% for comment in exercises.0.comments.all %}
+            <li>{{ comment.text }}</li>
+            {% empty %}
+            <li>No comments yet.</li>
+            {% endfor %}
+        </ul>
     </div>
-    {% empty %}
-    <p>No exercises available.</p>
-    {% endfor %}
 </div>
+<div>
+    <a href="#" class="btn btn-secondary disabled">Previous</a>
+    <a href="#" class="btn btn-secondary disabled">Next</a>
+</div>
+{% else %}
+<p>No exercises available.</p>
+{% endif %}
 {% endblock %}
