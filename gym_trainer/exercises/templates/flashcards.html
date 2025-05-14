@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Flashcards{% endblock %}
+{% block content %}
+<h1>Exercise Flashcards</h1>
+<div class="row">
+    {% for exercise in exercises %}
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ exercise.name }}</h5>
+                <p class="card-text"><strong>Muscles:</strong> {{ exercise.muscles }}</p>
+                <p class="card-text">{{ exercise.description }}</p>
+                <h6>Comments:</h6>
+                <ul>
+                    {% for comment in exercise.comments.all %}
+                    <li>{{ comment.text }}</li>
+                    {% empty %}
+                    <li>No comments yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No exercises available.</p>
+    {% endfor %}
+</div>
+{% endblock %}
