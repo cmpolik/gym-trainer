@@ -2,6 +2,12 @@
 {% block title %}Exercise List{% endblock %}
 {% block content %}
 <h1>Exercise List</h1>
+<form method="get" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="muscles" class="form-control" placeholder="Filter by muscles" value="{{ muscles }}">
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </div>
+</form>
 <table class="table table-striped">
     <thead>
         <tr>

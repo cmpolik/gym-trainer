@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<h1>Welcome to Gym Trainer</h1>
+<p>This app helps you learn proper gym exercises. Add exercises, comment on them, and view them as a list or flashcards.</p>
+<a href="{% url 'add_exercise' %}" class="btn btn-primary">Get Started</a>
+{% endblock %}

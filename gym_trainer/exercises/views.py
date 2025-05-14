@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from .models import Exercise
 from .forms import ExerciseForm, CommentForm
 
+def home(request):
+    return render(request, 'home.html')
+
 def add_exercise(request):
     if request.method == 'POST':
         form = ExerciseForm(request.POST)
@@ -26,8 +29,11 @@ def add_comment(request, exercise_id):
     return render(request, 'add_comment.html', {'form': form, 'exercise': exercise})
 
 def exercise_list(request):
+    muscles = request.GET.get('muscles', '')
     exercises = Exercise.objects.all()
-    return render(request, 'exercise_list.html', {'exercises': exercises})
+    if muscles:
+        exercises = exercises.filter(muscles__icontains=muscles)
+    return render(request, 'exercise_list.html', {'exercises': exercises, 'muscles': muscles})
 
 def flashcards(request):
     exercises = Exercise.objects.all()
