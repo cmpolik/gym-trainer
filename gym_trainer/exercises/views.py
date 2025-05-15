@@ -1,11 +1,17 @@
 from django.shortcuts import render, redirect
-from .models import Exercise
-from .forms import ExerciseForm, CommentForm
+from exercises.models import Exercise
+from exercises.forms import ExerciseForm, CommentForm
 
 def home(request):
+    """
+    Отображает главную страницу.
+    """
     return render(request, 'home.html')
 
 def add_exercise(request):
+    """
+    Добавляет упражнение.
+    """
     if request.method == 'POST':
         form = ExerciseForm(request.POST)
         if form.is_valid():
@@ -16,6 +22,9 @@ def add_exercise(request):
     return render(request, 'add_exercise.html', {'form': form})
 
 def add_comment(request, exercise_id):
+    """
+    Добавляет коммент.
+    """
     exercise = Exercise.objects.get(id=exercise_id)
     if request.method == 'POST':
         form = CommentForm(request.POST)

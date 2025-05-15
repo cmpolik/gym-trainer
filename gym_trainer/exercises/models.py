@@ -1,6 +1,12 @@
+"""
+Описание модуля.
+"""
 from django.db import models
 
 class Exercise(models.Model):
+    """
+    Модель для хранения упражнений.
+    """
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=500)
     muscles = models.CharField(max_length=100)
@@ -15,4 +21,4 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Comment for {self.exercise.name}"
+        return str(self.name)

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Exercise, Comment
+from exercises.models import Exercise, Comment
 
 class ExerciseForm(forms.ModelForm):
     class Meta:
