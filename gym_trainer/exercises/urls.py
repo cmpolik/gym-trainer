@@ -2,7 +2,7 @@
 URL patterns for the exercises app.
 """
 from django.urls import path
-from . import views
+from exercises import views
 
 urlpatterns = [
     path('', views.home, name='home'),
