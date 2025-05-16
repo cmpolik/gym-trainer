@@ -5,19 +5,30 @@
 {% if exercises %}
 <div id="flashcard-container">
     {% for exercise in exercises %}
-    <div class="flashcard card mb-3" style="display: none;" data-id="{{ exercise.id }}">
+    <div class="flashcard card mb-3" style="display: none; height: 400px;" data-id="{{ exercise.id }}">
         <div class="card-body">
             <h5 class="card-title">{{ exercise.name }}</h5>
             <p class="card-text"><strong>Muscles:</strong> {{ exercise.muscles }}</p>
             <p class="card-text">{{ exercise.description }}</p>
             <h6>Comments:</h6>
-            <ul>
-                {% for comment in exercise.comments.all %}
-                <li>{{ comment.text }}</li>
-                {% empty %}
-                <li>No comments yet.</li>
-                {% endfor %}
-            </ul>
+            <div style="max-height: 100px; overflow-y: auto;">
+                <ul>
+                    {% for comment in exercise.comments.all %}
+                    <li>{{ comment.text }}</li>
+                    {% empty %}
+                    <li>No comments yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% if exercise.media_file %}
+            <p><strong>Media:</strong> 
+                {% if exercise.media_file.url|slice:"-4" == ".gif" %}
+                <img src="{{ exercise.media_file.url }}" alt="Exercise media" style="max-width: 100%; max-height: 100px;">
+                {% else %}
+                <a href="{{ exercise.media_file.url }}" target="_blank">View YouTube video</a>
+                {% endif %}
+            </p>
+            {% endif %}
         </div>
     </div>
     {% endfor %}
@@ -37,7 +48,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextBtn = document.getElementById('next-btn');
     let currentIndex = 0;
 
-    // Show the first flashcard
+    // Get initial index from URL query (e.g., ?id=2)
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialId = urlParams.get('id');
+    if (initialId) {
+        const initialIndex = Array.from(flashcards).findIndex(card => card.dataset.id === initialId);
+        currentIndex = initialIndex >= 0 ? initialIndex : 0;
+    }
+
+    // Show the initial flashcard
     if (flashcards.length > 0) {
         flashcards[currentIndex].style.display = 'block';
         updateButtons();

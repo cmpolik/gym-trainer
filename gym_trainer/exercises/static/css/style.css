@@ -7,3 +7,10 @@ body {
 .card:hover {
     transform: scale(1.05);
 }
+.flashcard ul {
+    padding-left: 20px;
+    margin-bottom: 0;
+}
+.flashcard ul li {
+    margin-bottom: 5px;
+}
