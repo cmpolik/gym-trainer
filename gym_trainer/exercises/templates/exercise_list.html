@@ -14,6 +14,8 @@
             <th>Name</th>
             <th>Muscles</th>
             <th>Actions</th>
+            <th>Flashcard</th>
+            <th>Upload Media</th>
         </tr>
     </thead>
     <tbody>
@@ -22,9 +24,17 @@
             <td>{{ exercise.name }}</td>
             <td>{{ exercise.muscles }}</td>
             <td><a href="{% url 'add_comment' exercise.id %}" class="btn btn-sm btn-secondary">Add Comment</a></td>
+            <td><a href="{% url 'flashcards' %}?id={{ exercise.id }}" class="btn btn-sm btn-primary">View Flashcard</a></td>
+            <td>
+                <form method="post" enctype="multipart/form-data" action="{% url 'upload_media' exercise.id %}">
+                    {% csrf_token %}
+                    <input type="file" name="media_file" accept=".gif,.jpg,.png" class="form-control form-control-sm d-inline" style="width: auto;">
+                    <button type="submit" class="btn btn-sm btn-success">Upload</button>
+                </form>
+            </td>
         </tr>
         {% empty %}
-        <tr><td colspan="3">No exercises yet.</td></tr>
+        <tr><td colspan="5">No exercises yet.</td></tr>
         {% endfor %}
     </tbody>
 </table>
