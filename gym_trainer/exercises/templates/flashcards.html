@@ -3,26 +3,73 @@
 {% block content %}
 <h1>Exercise Flashcards</h1>
 {% if exercises %}
-<div class="card mb-3">
-    <div class="card-body">
-        <h5 class="card-title">{{ exercises.0.name }}</h5>
-        <p class="card-text"><strong>Muscles:</strong> {{ exercises.0.muscles }}</p>
-        <p class="card-text">{{ exercises.0.description }}</p>
-        <h6>Comments:</h6>
-        <ul>
-            {% for comment in exercises.0.comments.all %}
-            <li>{{ comment.text }}</li>
-            {% empty %}
-            <li>No comments yet.</li>
-            {% endfor %}
-        </ul>
+<div id="flashcard-container">
+    {% for exercise in exercises %}
+    <div class="flashcard card mb-3" style="display: none;" data-id="{{ exercise.id }}">
+        <div class="card-body">
+            <h5 class="card-title">{{ exercise.name }}</h5>
+            <p class="card-text"><strong>Muscles:</strong> {{ exercise.muscles }}</p>
+            <p class="card-text">{{ exercise.description }}</p>
+            <h6>Comments:</h6>
+            <ul>
+                {% for comment in exercise.comments.all %}
+                <li>{{ comment.text }}</li>
+                {% empty %}
+                <li>No comments yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
+    {% endfor %}
 </div>
 <div>
-    <a href="#" class="btn btn-secondary disabled">Previous</a>
-    <a href="#" class="btn btn-secondary disabled">Next</a>
+    <button id="prev-btn" class="btn btn-secondary" disabled>Previous</button>
+    <button id="next-btn" class="btn btn-secondary">Next</button>
 </div>
 {% else %}
 <p>No exercises available.</p>
 {% endif %}
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const flashcards = document.querySelectorAll('.flashcard');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    let currentIndex = 0;
+
+    // Show the first flashcard
+    if (flashcards.length > 0) {
+        flashcards[currentIndex].style.display = 'block';
+        updateButtons();
+    }
+
+    // Update button states
+    function updateButtons() {
+        prevBtn.disabled = currentIndex === 0;
+        nextBtn.disabled = currentIndex === flashcards.length - 1;
+    }
+
+    // Show flashcard at given index
+    function showFlashcard(index) {
+        flashcards.forEach((card, i) => {
+            card.style.display = i === index ? 'block' : 'none';
+        });
+        currentIndex = index;
+        updateButtons();
+    }
+
+    // Event listeners for buttons
+    prevBtn.addEventListener('click', () => {
+        if (currentIndex > 0) {
+            showFlashcard(currentIndex - 1);
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (currentIndex < flashcards.length - 1) {
+            showFlashcard(currentIndex + 1);
+        }
+    });
+});
+</script>
 {% endblock %}
